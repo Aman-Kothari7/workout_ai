@@ -5,11 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class InitialSettingsController extends GetxController {
   static InitialSettingsController get instance => Get.find();
 
-  var weightTextController = TextEditingController();
-
   @override
   void onClose() {
-    weightTextController.dispose();
     super.onClose();
   }
 
@@ -18,9 +15,9 @@ class InitialSettingsController extends GetxController {
     await prefs.setInt('age', age);
   }
 
-  Future<void> saveWeightGoal() async {
+  Future<void> saveWeightGoal(String weightGoal) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('weightGoal', weightTextController.text);
+    await prefs.setString('weightGoal', weightGoal);
   }
 
   Future<void> saveHeight(int height) async {

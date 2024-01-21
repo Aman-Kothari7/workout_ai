@@ -22,31 +22,18 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle the back action
-          },
-        ),
         title: Text(
           'Age',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: Text('1/4')),
-          ),
-        ],
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Column(
         children: <Widget>[
           LinearProgressIndicator(
-            value: 0.25, // This represents 1/4 progress
+            value: 1 / 6, // This represents 1/4 progress
             backgroundColor: Colors.grey[300],
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
           ),
@@ -84,7 +71,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                         final age = 18 + index;
                         final isSelected = _selectedAge == age;
                         return Center(
-                          child: Text(
+                          child: Text( 
                             age.toString(),
                             style: TextStyle(
                               fontSize: 55,
@@ -102,7 +89,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
           ),
           Container(
             width: double.infinity,
-            height: 50,
+            height: 60,
             margin: EdgeInsets.all(16),
             child: ElevatedButton(
               child: Text('Next'),
@@ -114,6 +101,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(color: Colors.transparent),
                 ),
               ),
             ),

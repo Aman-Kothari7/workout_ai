@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_flutter_app/src/features/authentication/controllers/initial_settings_controller.dart';
+import 'package:login_flutter_app/src/features/authentication/screens/initial_questions/height_screen.dart';
 import 'package:login_flutter_app/src/features/authentication/screens/initial_questions/weight_goal_screen.dart';
 
 class WeightSelectionScreen extends StatefulWidget {
@@ -25,27 +26,21 @@ class _WeightSelectionScreenState extends State<WeightSelectionScreen> {
           color: Colors.black,
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Handle the back action
+            Get.back();
           },
         ),
         title: Text(
-          'Age',
+          'Weight',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: Text('1/4')),
-          ),
-        ],
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Column(
         children: <Widget>[
           LinearProgressIndicator(
-            value: 0.25, // This represents 1/4 progress
+            value: 2 / 6, // This represents 1/4 progress
             backgroundColor: Colors.grey[300],
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
           ),
@@ -99,17 +94,17 @@ class _WeightSelectionScreenState extends State<WeightSelectionScreen> {
               ],
             ),
           ),
-          //Fix next button next cutting out 
+          //Fix next button next cutting out
           Container(
             width: double.infinity,
-            height: 50,
+            height: 60,
             margin: EdgeInsets.all(16),
             child: ElevatedButton(
               child: Text('Next'),
               onPressed: () async {
                 await InitialSettingsController.instance
                     .saveWeight(_selectedWeight);
-                Get.to(() => WeightGoalScreen());
+                Get.to(() => HeightSelectionScreen());
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
