@@ -16,13 +16,13 @@ class _initialDashboardScreenState extends State<initialDashboardScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     loadGender();
     loadWeight();
     loadAge();
     loadWeightGoal();
     loadHeight();
     loadActivityLevel();
+    super.initState();
   }
 
   String? weightGoal;
