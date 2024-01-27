@@ -20,14 +20,14 @@ class InitialSettingsController extends GetxController {
     await prefs.setString('weightGoal', weightGoal);
   }
 
-  Future<void> saveHeight(int height) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('height', height);
-  }
+  // Future<void> saveHeight(int height) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setInt('height', height);
+  // }
 
-  Future<void> saveWeight(int weight) async {
+  Future<void> saveWeight(double weight) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('weight', weight);
+    await prefs.setDouble('weight', weight);
   }
 
   Future<void> saveGender(String gender) async {
@@ -39,4 +39,27 @@ class InitialSettingsController extends GetxController {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('activityLevel', activityLevel);
   }
+
+  Future<void> saveHeightCM(int heightCM) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('heightCM', heightCM);
+  }
+
+  Future<void> saveHeightInches(int heightInches) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('heightInches', heightInches);
+  }
+
+  Future<void> saveIsCM(bool isCM) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isCM', isCM);
+  }
+  
+  Future<void> saveIsKg(bool isKg) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isKg', isKg);
+ }
+
 }
+
+

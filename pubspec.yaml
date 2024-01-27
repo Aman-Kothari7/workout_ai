@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
+  syncfusion_flutter_charts: ^24.1.46
 
   ## -- STATE MANAGEMENT
   get: ^4.6.6
