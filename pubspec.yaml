@@ -37,6 +37,7 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   flutter_native_splash: ^2.2.16
   shared_preferences: ^2.2.2
+  syncfusion_flutter_gauges: ^24.1.47
 
 
 

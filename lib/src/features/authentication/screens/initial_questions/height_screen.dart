@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_flutter_app/src/features/authentication/controllers/initial_settings_controller.dart';
@@ -84,7 +82,7 @@ class _HeightSelectionScreenState extends State<HeightSelectionScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        //color: Colors.white,
                       ),
                     ),
                   ],

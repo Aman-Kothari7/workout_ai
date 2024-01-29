@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_flutter_app/src/features/authentication/controllers/initial_settings_controller.dart';
@@ -106,7 +104,7 @@ class _WeightSelectionScreenState extends State<WeightSelectionScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        // color: Colors.black,
                       ),
                     ),
                   ],
@@ -243,8 +241,8 @@ class _WeightSelectionScreenState extends State<WeightSelectionScreen> {
               onPressed: () async {
                 double weightValue;
                 if (isKg) {
-                  weightValue =
-                      _selectedWeight.toDouble() + _selectedDecimal; // Weight is in kg
+                  weightValue = _selectedWeight.toDouble() +
+                      _selectedDecimal; // Weight is in kg
                 } else {
                   weightValue = _selectedWeight.toDouble();
                 }

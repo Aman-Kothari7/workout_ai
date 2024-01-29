@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_flutter_app/src/features/authentication/controllers/initial_settings_controller.dart';
 import 'package:login_flutter_app/src/features/authentication/screens/initial_questions/activity_level_screen.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/activity_level_card.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/bmi_gauge.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/calorie_bar_chart.dart';
 import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/macronutrient_chart.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/meal_plan_card.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/user_info_card.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/weight_goal_gauge.dart';
+import 'package:login_flutter_app/src/features/core/screens/initial_dashboard/workout_plan_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class initialDashboardScreen extends StatefulWidget {
@@ -25,17 +32,18 @@ class _initialDashboardScreenState extends State<initialDashboardScreen> {
     super.initState();
   }
 
-  String? weightGoal;
-  int? age;
-  int? weight;
+  String? weightGoal = 'WeightGoal.maintainWeight';
+  int? age = 21;
+  int? weight = 70;
   String? gender;
-  int? height;
+  int? height = 150;
   String? activityLevel;
   List<double>? macros;
-  double? heightInCM;
+  double? heightInCM = 150;
   String? heightDisplay;
-  String weightDisplay = ''; // To hold the displayed weight (e.g., "70 kg" or "154 lbs")
-  double weightInKg = 0.0; // To store the weight in kg for calculations 
+  String weightDisplay =
+      ''; // To hold the displayed weight (e.g., "70 kg" or "154 lbs")
+  double weightInKg = 0.0; // To store the weight in kg for calculations
   // final int? netCalories = calculateCalories();
 
   void loadHeight() async {
@@ -52,28 +60,28 @@ class _initialDashboardScreenState extends State<initialDashboardScreen> {
       heightInCM = (feet * 30.48 + inches * 2.54).toDouble();
       heightDisplay = '$feet ft $inches in';
     }
-    
+
     setState(() {});
   }
 
   Future<void> loadWeight() async {
-  final prefs = await SharedPreferences.getInstance();
-  final isKg = prefs.getBool('isKg') ?? true; // Default to kg if not set
+    final prefs = await SharedPreferences.getInstance();
+    final isKg = prefs.getBool('isKg') ?? true; // Default to kg if not set
 
-  if (isKg) {
-    final double weightInKgStored = prefs.getDouble('weight') ?? 0.0;
-    setState(() {
-      weightDisplay = '$weightInKgStored kg'; // Display in kg
-      weightInKg = weightInKgStored; // Store in kg for calculations
-    });
-  } else {
-    final double weightInLbs = prefs.getDouble('weight') ?? 0.0;
-    setState(() {
-      weightDisplay = '$weightInLbs lbs'; // Display in lbs
-      weightInKg = weightInLbs * 0.453592; // Convert to kg for calculations
-    });
+    if (isKg) {
+      final double weightInKgStored = prefs.getDouble('weight') ?? 0.0;
+      setState(() {
+        weightDisplay = '$weightInKgStored kg'; // Display in kg
+        weightInKg = weightInKgStored; // Store in kg for calculations
+      });
+    } else {
+      final double weightInLbs = prefs.getDouble('weight') ?? 0.0;
+      setState(() {
+        weightDisplay = '$weightInLbs lbs'; // Display in lbs
+        weightInKg = weightInLbs * 0.453592; // Convert to kg for calculations
+      });
+    }
   }
-}
 
   void loadWeightGoal() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -144,7 +152,26 @@ class _initialDashboardScreenState extends State<initialDashboardScreen> {
 
   double calculateBMI() {
     double heightInMeters = heightInCM! / 100;
-    return weightInKg! / (heightInMeters * heightInMeters);
+    return weightInKg / (heightInMeters * heightInMeters);
+  }
+
+  double calculateTotalCalories() {
+    double bmr = calculateBMR();
+    double activityFactor = 1.2; // Default for 'Little or no exercise'
+
+    if (activityLevel == 'ActivityLevel.oneToThree') {
+      activityFactor = 1.375;
+    } else if (activityLevel == 'ActivityLevel.fourToFive') {
+      activityFactor = 1.55;
+    } else if (activityLevel == 'ActivityLevel.daily') {
+      activityFactor = 1.725;
+    } else if (activityLevel == 'ActivityLevel.intense') {
+      activityFactor = 1.9;
+    }
+
+    double totalCalories = bmr * activityFactor;
+
+    return totalCalories;
   }
 
   double calculateCalories() {
@@ -189,93 +216,73 @@ class _initialDashboardScreenState extends State<initialDashboardScreen> {
     return calories;
   }
 
+  void _showSignUpDialog(BuildContext context, String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text('Please sign up to access this feature.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Sign Up'),
+              onPressed: () {
+                // TODO: Implement the sign-up action
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.menu), // Side panel menu icon
-        actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: (String result) {
-              // Handle action
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'Action 1',
-                child: Text('Action 1'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Action 2',
-                child: Text('Action 2'),
-              ),
-            ],
-          ),
-        ],
       ),
-      body: Column(
-        children: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              // Generate workout plan
-            },
-            child: Text('Generate Workout Plan'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Generate meal plan
-            },
-            child: Text('Generate Meal Plan'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text('AGE\n $age'),
-                Text('HEIGHT\n $heightDisplay'),
-                Text('WEIGHT\n $weightDisplay'),
-                Text('BMI\n26.1'),
-                //Text(calculateBMI().toStringAsFixed(2))
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            userInfoCard(
+              age: age,
+              heightDisplay: heightDisplay,
+              weightDisplay: weightDisplay,
+              bmi: calculateBMI().toStringAsFixed(2),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-              
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      //padding: EdgeInsets.all(4.0), // Padding around the tile
-          width: MediaQuery.of(context).size.width/1.5, // The tile takes full width, you can adjust it as needed
-          height: 200, // Adjust the height as needed
-          decoration: BoxDecoration(
-            color: Colors.blue.shade200, // Adjust the tile color as needed
-            borderRadius: BorderRadius.circular(16.0), // Rounded corners
-          ),
-                      child: MacronutrientChart(
-                        proteinGrams: calculateMacronutrients(calculateCalories())[0],
-                        carbGrams: calculateMacronutrients(calculateCalories())[1],
-                        fatGrams: calculateMacronutrients(calculateCalories())[2],
-                        totalCalories: calculateCalories()
-                      ),
-                    ),
-                  ],
-                )
-              ],
+            MacronutrientChartCard(
+              proteinGrams: calculateMacronutrients(calculateCalories())[0],
+              carbGrams: calculateMacronutrients(calculateCalories())[1],
+              fatGrams: calculateMacronutrients(calculateCalories())[2],
+              totalCalories: calculateCalories(),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Text('HOME'),
-            Text('WORKOUT'),
-            Text('MEAL'),
+            CalorieBarChartCard(
+              consumedCalories: calculateCalories(),
+              totalCalories: calculateTotalCalories(),
+            ),
+            WeightGoalGaugeCard(
+              weightGoal: weightGoal!,
+            ),
+            MealPlanCard(
+              onCardTap: () => _showSignUpDialog(context, 'Generate Meal Plan'),
+            ),
+            WorkoutPlanCard(
+              onCardTap: () =>
+                  _showSignUpDialog(context, 'Generate Workout Plan'),
+            ),
+            BmiGaugeCard(bmi: calculateBMI()),
+            ActivityLevelCard(
+              currentActivityLevel: activityLevel,
+            )
           ],
         ),
       ),
